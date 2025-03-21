@@ -1,0 +1,109 @@
+---
+description: Git 提交规范
+globs: 
+alwaysApply: false
+---
+# Git提交规范
+
+此规则定义了 Git 操作、提交信息和工作流程实践的标准。
+
+<rule>
+name: git_commit_standards
+description: Git提交规范，包含提交信息格式和工作流程标准
+
+filters:
+  - type: event
+    pattern: "git_commit"
+  - type: content
+    pattern: "^(feat|fix|docs|style|refactor|test|perf|chore|jvm|pom|conf)(\\(.*\\))?!?: .+"
+
+actions:
+  - type: enforce
+    message: |
+      Git提交必须遵循以下规则：
+
+      1. **提交信息格式**:
+         ```
+         <type>(<scope>): <subject>
+         
+         [可选 body]
+         
+         [可选 footer]
+         ```
+         
+         规范说明：
+         - 冒号必须是英文半角，后跟一个空格
+         - header必需，body和footer可选
+         - 每行不超过100个字符
+         - subject不超过50个字符且结尾不加标点
+
+      2. **原子性要求**:
+         - 每次提交限制在100行代码以内
+         - 影响文件不超过10个
+         - 每次提交只包含一个完整的修改
+         - 禁止提交不完整或无法编译的代码
+
+      3. **禁止操作**:
+         - 禁止使用git add .
+         - 禁止在一次提交中混合多个修改目的
+         - 禁止隐藏修改内容
+
+examples:
+  - input: |
+      # 错误示例
+      git commit -m "修改bug"
+      
+      # 正确示例
+      git commit -m "fix(dao): 修复用户查询空指针异常" -m "优化了空值处理逻辑" -m "TICKET-123"
+    output: "符合规范的Git提交"
+</rule>
+
+## 提交类型说明
+
+### Type定义
+必须是以下类型之一
+* feat: 新功能
+* fix: 修复bug
+* docs: 文档变更
+* style: 代码格式调整
+* refactor: 代码重构
+* test: 测试用例
+* perf: 性能优化
+* chore: 其他修改
+* jvm: JVM参数变更
+* pom: 依赖变更
+* conf: 配置变更
+
+### Scope说明
+- 表示修改影响的范围
+- 可用逗号分隔多个范围：(service,dao)
+- 可用*表示影响所有范围
+
+## 示例
+
+<EXAMPLE name="新功能">
+feat(service): JsonUtil类增加parse方法，解析json串
+
+增加JSON字符串解析方法
+- 支持复杂对象解析
+- 添加异常处理
+- 补充单元测试
+</EXAMPLE>
+
+<EXAMPLE name="Bug修复">
+fix(dao): 修复SkuStockBaseDAO中SKU_ID空指针问题
+
+优化空值判断逻辑，添加参数校验
+</EXAMPLE>
+
+<EXAMPLE name="配置变更">
+conf(server): mafka.properties重试时间间隔参数调整
+
+重试间隔从1000ms调整为5000ms
+</EXAMPLE>
+
+<EXAMPLE name="回滚操作">
+revert: feat(service): JsonUtil类增加parse方法，解析json串
+
+撤销commit: 8e24e99
+</EXAMPLE>

@@ -1,5 +1,7 @@
 {
-  "title": "我的插件",
-  "countLabel": "计数为 {{count}}",
-  "successMessage": "成功！"
+  "title": "右键标签清理",
+  "countLabel": "已清理标签数: {{count}}",
+  "successMessage": "操作成功！",
+  "clearTagsSuccess": "标签清理完成",
+  "clearTagsError": "清理标签时发生错误"
 } 

@@ -15,6 +15,13 @@ export function App(): JSXInternal.Element {
         }}>
           {i18n.t('countLabel', { count })}
         </button>
+
+        <br />
+        <button onClick={() => {
+          window.Blinko.toast.success(i18n.t('cleanTag'));
+        }}>
+          {i18n.t('cleanTag')}
+        </button>
       </div>
     </>
   );
