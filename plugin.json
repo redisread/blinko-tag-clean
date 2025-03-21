@@ -2,7 +2,7 @@
   "name": "blinko-tag-clean",
   "author": "VictorHong",
   "url": "https://github.com/redisread/blinko-tag-clean",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "minAppVersion": "0.0.0",
   "displayName": {
     "default": "Tag Cleaner",
