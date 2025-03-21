@@ -1,8 +1,5 @@
 {
   "title": "Tag Cleaner",
-  "countLabel": "Cleaned tags: {{count}}",
-  "successMessage": "Operation successful!",
-  "cleanTag": "Clean Tag",
   "clearTagsSuccess": "Tags cleaned successfully",
   "clearTagsError": "Failed to clean tags"
-} 
+}

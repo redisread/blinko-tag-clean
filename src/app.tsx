@@ -10,14 +10,6 @@ export function App(): JSXInternal.Element {
       <h1>{i18n.t('title')}</h1>
       <div class="card">
         <button onClick={() => {
-          setCount(count => count + 1);
-          console.log(window.Blinko.toast.success(i18n.t('successMessage')));
-        }}>
-          {i18n.t('countLabel', { count })}
-        </button>
-
-        <br />
-        <button onClick={() => {
           window.Blinko.toast.success(i18n.t('cleanTag'));
         }}>
           {i18n.t('cleanTag')}

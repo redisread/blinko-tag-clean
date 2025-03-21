@@ -21,19 +21,6 @@ System.register([], (exports) => ({
         Object.assign(this, plugin);
       }
 
-      // Flag indicating this plugin has a settings panel
-      withSettingPanel = true;
-
-      /**
-       * Renders the settings panel UI
-       * @returns {HTMLElement} Container element with rendered settings component
-       */
-      // renderSettingPanel = () => {
-      //   const container = document.createElement('div');
-      //   render(<Setting />, container);
-      //   return container;
-      // }
-
       /**
        * Initializes the plugin
        * Sets up toolbar icons, right-click menus, and AI write prompts
@@ -41,77 +28,40 @@ System.register([], (exports) => ({
       async init() {
         // Initialize internationalization
         this.initI18n();
-        
-        // Add toolbar icon with click handler
-        window.Blinko.addToolBarIcon({
-          name: "clean-tag-tool",
-          icon: "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-file'><path d='M13 3H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z'/><polyline points='14 3 14 9 19 9'/></svg>",
-          placement: 'top',
-          tooltip: '清除标签',
-          content: () => {
-            const container = document.createElement('div');
-            container.setAttribute('data-plugin', 'my-note-plugin');
-            render(<App />, container);
-            return container;
-          }
-        });
-
+      
         // Add right-click menu for clearing tags
         window.Blinko.addRightClickMenu({
           name: 'clear-tags',
-          label: '清除标签',
+          label: window.Blinko.i18n.t('title'),
           icon: 'tabler:tags-off',
           onClick: async (item) => {
             try {
-              // 获取当前笔记内容
               const notes = await window.Blinko.api.notes.listByIds.mutate({
                 ids: [item.id]
               });
               
-              // 检查返回的数据结构
               console.log("notes:", notes);
               
-              // 确保我们能获取到笔记内容
               if (!notes || !notes[0] || !notes[0].content) {
-                throw new Error('无法获取笔记内容');
+                throw new Error(window.Blinko.i18n.t('clearTagsError'));
               }
 
               const content = this.removeHashtags(notes[0].content);
               
-              // 更新笔记，清除所有标签
               await window.Blinko.api.notes.upsert.mutate({
                 id: item.id,
                 tags: [],
                 content: content
               });
-               // 刷新 note.list 不需要整个页面刷新 
-               await window.Blinko.globalRefresh();
+              await window.Blinko.globalRefresh();
 
-              // 显示成功提示
-              window.Blinko.toast.success('标签已清除');
+              window.Blinko.toast.success(window.Blinko.i18n.t('clearTagsSuccess'));
             } catch (error) {
               console.error('清除标签失败:', error);
-              window.Blinko.toast.error('清除标签失败');
+              window.Blinko.toast.error(window.Blinko.i18n.t('clearTagsError'));
             }
           }
         });
-
-        // Add AI write prompt for translation
-        // window.Blinko.addAiWritePrompt(
-        //   'Translate Content',
-        //   'Please translate the following content into English:',
-        //   'material-symbols:translate'
-        // );
-
-        // window.Blinko.showDialog({
-        //   title: 'Dialog',
-        //   content: () => {
-        //     const container = document.createElement('div');
-        //     container.setAttribute('data-plugin', 'my-note-plugin');
-        //     render(<App />, container);
-        //     return container;
-        //   }
-        // })
       }
 
       removeHashtags(content: string): string {
